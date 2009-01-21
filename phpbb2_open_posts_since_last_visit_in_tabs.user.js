@@ -1,55 +1,45 @@
 // ==UserScript==
-// @name           phpBB Recent Topics opener (first unread tabs)
-// @namespace      http://fheub.at.tf/
-// @description    phpBB Recent Topics opener (first unread tabs)
-// @include        */search.php?*search_id=newposts*
-// @include        */viewforum.php?f=*
+// @name           phpBB2 Open all matched topics in tabs
+// @namespace      http://www.laskikymppi.com/
+// @description    Inserts an "Open all topics in tabs" link to phpBB2 search pages.
+// @include        */search.php?*
 // ==/UserScript==
 //
+// 21-01-2009 hvrauhal 
+// 19-08-2008 v1.2.0 fheub http://userscripts.org/scripts/show/4681
+// 21-03-2006 Copyright (c) 2006, JAPIO http://userscripts.org/scripts/review/3609
 //
-// 19-08-2008v1.2.0 fheub
-// 21-03-2006 Copyright (c) 2006, JAPIO
 // Released under the GPL license
 // http://www.gnu.org/copyleft/gpl.html
 // --------------------------------------------------------------------
 //
-// This is a Greasemonkey user script.
+// Inserts an "Open all topics in tabs" link to phpBB2 search
+// pages. Clicking the link opens all topics listed on the page in new tabs, at their last post.
 //
-// To install, you need Greasemonkey: http://greasemonkey.mozdev.org/
-// Then restart Firefox and revisit this script.
-// Under Tools, there will be a new menu item to "Install User Script".
-// Accept the default configuration and install.
-//
-// To uninstall, go to Tools/Manage User Scripts,
-// select "phpBB Recent Topics opener", and click Uninstall.
-//
-//
+// INSTALLATION
+// First install Greasemonkey from http://greasemonkey.mozdev.org/
+// Then install this script by revisiting this page
 
-
-var LabelAll = "Open all in new tabs";
-
-function openRecentPosts(maxLinks, allLinks) {
-    for (var i = 0; i < allLinks.snapshotLength && i < maxLinks; i++) {
+function openRecentPosts(allLinks) {
+    for (var i = 0; i < allLinks.snapshotLength; i++) {
 	GM_openInTab(allLinks.snapshotItem(i).href);
     }
 }
     
-    latestReplyImages = document.evaluate("//img[contains(@src, 'images/icon_latest_reply.gif')]", document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-    linkImage = latestReplyImages.snapshotItem(0).src;
+function xpath(query) {
+    return document.evaluate(query, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+}
+    allLinks = xpath("//a[contains(@href, 'viewtopic.php?p=')]");
     
-    insertlocation = document.evaluate(
-	"//th[contains(@class, 'thCornerR')]",
-	document, null,	XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null
-    );
+    forumIndexLinkCell = xpath("//td/span/a[contains(@href, 'index.php')]/parent::*/parent::*").snapshotItem(0);
     
-    allLinks = document.evaluate(
-	"//a[contains(@href, 'viewtopic.php?p=')]",
-	document, null,	XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null
-    );
-    
-    newLink = insertlocation.snapshotItem(0);
-    newLink.innerHTML = newLink.innerHTML + '&nbsp;<a href="#" title="' + LabelAll + '">Open all in tabs <img src="' + linkImage + '" alt="' + LabelAll + '" title="' + LabelAll + '" border="0" /></a>';
-    newLink.addEventListener('click', function() {openRecentPosts(100, allLinks)}, true);
-    
-    
-    
+    newTableCell = document.createElement('td');
+    newTableCell.class = "gensmall";
+    newTableCell.align = "right";
+    newTableCell.valign = "bottom";
+    linkAnchor = document.createElement('a');
+    linkAnchor.innerHTML = '<a href="#" class="gensmall">Open all topics in tabs</a>';
+    linkAnchor.addEventListener('click', function() {openRecentPosts(allLinks)}, true);
+    newTableCell.appendChild(linkAnchor);
+
+    forumIndexLinkCell.parentNode.insertBefore(newTableCell, forumIndexLinkCell.nextSibling);
