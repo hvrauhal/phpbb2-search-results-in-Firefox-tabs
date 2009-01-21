@@ -20,8 +20,7 @@
 // First install Greasemonkey from http://greasemonkey.mozdev.org/
 // Then install this script by revisiting this page
 
-var allLinks = collectAllLinks();
-insertActionToPage(allLinks);
+insertActionToPage(collectAllLinks());
 GM_log("Added open all topics in tabs to page.");
 
 function collectAllLinks() {
