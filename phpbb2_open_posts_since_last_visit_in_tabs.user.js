@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name           phpBB2 Open all matched topics in tabs
-// @namespace      http://www.laskikymppi.com/
-// @description    Inserts an "Open all topics in tabs" link to phpBB2 search pages.
-// @include        */search.php?*
+// @name phpBB2 Open all matched topics in tabs
+// @namespace http://www.laskikymppi.com/
+// @description Inserts an Open all topics in tabs link to phpBB2 search pages.
+// @include */search.php?*
 // ==/UserScript==
 //
 // 21-01-2009 hvrauhal 
