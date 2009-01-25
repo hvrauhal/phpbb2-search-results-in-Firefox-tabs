@@ -29,7 +29,7 @@ function collectAllTopicAnchors() {
 
 function insertActionToPage(anchors) {
     var linkCell = createNewTableCell();
-    linkCell.appendChild(createLinkAnchor(anchors));
+    linkCell.appendChild(createOpenInTabsAnchor(anchors));
     insertAfter(linkCell, lookupForumIndexCell());
 }
 
@@ -41,7 +41,7 @@ function createNewTableCell() {
     return td;
 }
 
-function createLinkAnchor(anchors) {
+function createOpenInTabsAnchor(anchors) {
     var anchor = document.createElement('a');
     anchor.href = "#";
     anchor.innerHTML = 'Open all topics in tabs';
