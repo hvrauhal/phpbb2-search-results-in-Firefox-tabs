@@ -7,7 +7,7 @@
 //
 // 21-01-2009 hvrauhal 
 // 19-08-2008 v1.2.0 fheub http://userscripts.org/scripts/show/4681
-// 21-03-2006 Copyright (c) 2006, JAPIO http://userscripts.org/scripts/review/3609
+// 21-03-2006 Copyright (c) 2006, JAPIO http://userscripts.org/scripts/show/3609
 //
 // Released under the GPL license
 // http://www.gnu.org/copyleft/gpl.html
@@ -17,55 +17,52 @@
 // pages. Clicking the link opens all topics listed on the page in new tabs, at their last post.
 //
 // INSTALLATION
-// First install Greasemonkey from http://greasemonkey.mozdev.org/
+// First install Greasemonkey from https://addons.mozilla.org/en-US/firefox/addon/748
 // Then install this script by revisiting this page
 
-insertActionToPage(collectAllLinks());
+insertActionToPage(collectAllTopicAnchors());
 GM_log("Added open all topics in tabs to page.");
 
-function collectAllLinks() {
-    return xpath("//a[contains(@href, 'viewtopic.php?p=')]");
+function collectAllTopicAnchors() {
+    return evaluateXPath("//a[contains(@href, 'viewtopic.php?p=')]");
 }
 
-function insertActionToPage(allLinks) {
-    var newTableCell;
-    newTableCell = createNewTableCell();
-    newTableCell.appendChild(createLinkAnchor(allLinks));
-    insertElementAfter(lookupForumIndexCell(), newTableCell);
+function insertActionToPage(anchors) {
+    var linkCell = createNewTableCell();
+    linkCell.appendChild(createLinkAnchor(anchors));
+    insertAfter(linkCell, lookupForumIndexCell());
 }
 
 function createNewTableCell() {
-    var newTableCell;
-    newTableCell = document.createElement('td');
-    newTableCell.class = "gensmall";
-    newTableCell.align = "right";
-    newTableCell.valign = "bottom";
-    return newTableCell;
+    var td = document.createElement('td');
+    td.class = "gensmall";
+    td.align = "right";
+    td.valign = "bottom";
+    return td;
 }
 
-function createLinkAnchor(allLinks) {
-    var linkAnchor;
-    linkAnchor = document.createElement('a');
-    linkAnchor.href = "#";
-    linkAnchor.innerHTML = 'Open all topics in tabs';
-    linkAnchor.addEventListener('click', function() {openRecentPosts(allLinks)}, true);
-    return linkAnchor;
+function createLinkAnchor(anchors) {
+    var anchor = document.createElement('a');
+    anchor.href = "#";
+    anchor.innerHTML = 'Open all topics in tabs';
+    anchor.addEventListener('click', function() { openInTabs(anchors) }, true);
+    return anchor;
 }
 
-function insertElementAfter(original, newElement) {
+function insertAfter(newElement, original) {
     original.parentNode.insertBefore(newElement, original.nextSibling);
 }
 
 function lookupForumIndexCell() {
-    return xpath("//td/span/a[contains(@href, 'index.php')]/parent::*/parent::*").snapshotItem(0);
+    return evaluateXPath("//td/span/a[contains(@href, 'index.php')]/parent::*/parent::*").snapshotItem(0);
 }
 
-function openRecentPosts(allLinks) {
-    for (var i = 0; i < allLinks.snapshotLength; i++) {
-	GM_openInTab(allLinks.snapshotItem(i).href);
+function openInTabs(anchors) {
+    for (var i = 0; i < anchors.snapshotLength; i++) {
+	GM_openInTab(anchors.snapshotItem(i).href);
     }
 }
-function xpath(query) {
+
+function evaluateXPath(query) {
     return document.evaluate(query, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-};
-    
+}
