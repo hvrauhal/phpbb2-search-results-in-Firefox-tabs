@@ -29,21 +29,22 @@ function collectAllTopicAnchors() {
 
 function insertActionToPage(anchors) {
     var linkCell = createNewTableCell();
-    linkCell.appendChild(createOpenInTabsAnchor(anchors));
+    linkCell.appendChild(createLinkAnchor(anchors));
     insertAfter(linkCell, lookupForumIndexCell());
 }
 
 function createNewTableCell() {
     var td = document.createElement('td');
-    td.class = "gensmall";
+    td.className = "gensmall";
     td.align = "right";
     td.valign = "bottom";
     return td;
 }
 
-function createOpenInTabsAnchor(anchors) {
+function createLinkAnchor(anchors) {
     var anchor = document.createElement('a');
     anchor.href = "#";
+    anchor.className= "gensmall";
     anchor.innerHTML = 'Open all topics in tabs';
     anchor.addEventListener('click', function() { openInTabs(anchors) }, true);
     return anchor;
