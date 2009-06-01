@@ -35,7 +35,7 @@ function insertActionToPage(anchors) {
 
 function createNewTableCell() {
     var td = document.createElement('td');
-    td.class = "gensmall";
+    td.className = "gensmall";
     td.align = "right";
     td.valign = "bottom";
     return td;
@@ -44,8 +44,9 @@ function createNewTableCell() {
 function createOpenInTabsAnchor(anchors) {
     var anchor = document.createElement('a');
     anchor.href = "#";
+    anchor.className= "gensmall";
     anchor.innerHTML = 'Open all topics in tabs';
-    anchor.addEventListener('click', function() { openInTabs(anchors) }, true);
+    anchor.addEventListener('click', function() { openInTabs(anchors); }, true);
     return anchor;
 }
 
