@@ -46,7 +46,7 @@ function createOpenInTabsAnchor(anchors) {
     anchor.href = "#";
     anchor.className= "gensmall";
     anchor.innerHTML = 'Open all topics in tabs';
-    anchor.addEventListener('click', function() { openInTabs(anchors) }, true);
+    anchor.addEventListener('click', function() { openInTabs(anchors); }, true);
     return anchor;
 }
 
