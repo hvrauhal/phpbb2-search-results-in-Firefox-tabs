@@ -20,50 +20,53 @@
 // First install Greasemonkey from https://addons.mozilla.org/en-US/firefox/addon/748
 // Then install this script by revisiting this page
 
-insertActionToPage(collectAllTopicAnchors());
-GM_log("Added open all topics in tabs to page.");
-
-function collectAllTopicAnchors() {
-    return evaluateXPath("//a[contains(@href, 'viewtopic.php?p=')]");
-}
-
-function insertActionToPage(anchors) {
-    var linkCell = createNewTableCell();
-    linkCell.appendChild(createOpenInTabsAnchor(anchors));
-    insertAfter(linkCell, lookupForumIndexCell());
-}
-
-function createNewTableCell() {
-    var td = document.createElement('td');
-    td.className = "gensmall";
-    td.align = "right";
-    td.valign = "bottom";
-    return td;
-}
-
-function createOpenInTabsAnchor(anchors) {
-    var anchor = document.createElement('a');
-    anchor.href = "#";
-    anchor.className= "gensmall";
-    anchor.innerHTML = 'Open all topics in tabs';
-    anchor.addEventListener('click', function() { openInTabs(anchors); }, true);
-    return anchor;
-}
-
-function insertAfter(newElement, original) {
-    original.parentNode.insertBefore(newElement, original.nextSibling);
-}
-
-function lookupForumIndexCell() {
-    return evaluateXPath("//td/span/a[contains(@href, 'index.php')]/parent::*/parent::*").snapshotItem(0);
-}
-
-function openInTabs(anchors) {
-    for (var i = 0; i < anchors.snapshotLength; i++) {
-	GM_openInTab(anchors.snapshotItem(i).href);
+(function () {
+    function collectAllTopicAnchors() {
+        return evaluateXPath("//a[contains(@href, 'viewtopic.php?p=')]");
     }
-}
+    
+    function insertActionToPage(anchors) {
+        var linkCell = createNewTableCell();
+        linkCell.appendChild(createOpenInTabsAnchor(anchors));
+        insertAfter(linkCell, lookupForumIndexCell());
+    }
+    
+    function createNewTableCell() {
+        var td = document.createElement('td');
+        td.className = "gensmall";
+        td.align = "right";
+        td.valign = "bottom";
+        return td;
+    }
+    
+    function createOpenInTabsAnchor(anchors) {
+        var anchor = document.createElement('a');
+        anchor.href = "#";
+        anchor.className= "gensmall";
+        anchor.innerHTML = 'Open all topics in tabs';
+        anchor.addEventListener('click', function() { openInTabs(anchors); }, true);
+        return anchor;
+    }
+    
+    function insertAfter(newElement, original) {
+        original.parentNode.insertBefore(newElement, original.nextSibling);
+    }
+    
+    function lookupForumIndexCell() {
+        return evaluateXPath("//td/span/a[contains(@href, 'index.php')]/parent::*/parent::*").snapshotItem(0);
+    }
+    
+    function openInTabs(anchors) {
+        for (var i = 0; i < anchors.snapshotLength; i++) {
+	    GM_openInTab(anchors.snapshotItem(i).href);
+        }
+    }
+    
+    function evaluateXPath(query) {
+        return document.evaluate(query, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+    }
 
-function evaluateXPath(query) {
-    return document.evaluate(query, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-}
+    insertActionToPage(collectAllTopicAnchors());
+    GM_log("Added open all topics in tabs to page.");
+
+})();
