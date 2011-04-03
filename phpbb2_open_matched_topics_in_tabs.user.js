@@ -4,7 +4,7 @@
 // @description Inserts an Open all topics in tabs link to phpBB2 search pages.
 // @include */search.php?*
 // ==/UserScript==
-//
+// */
 // 21-01-2009 hvrauhal 
 // 19-08-2008 v1.2.0 fheub http://userscripts.org/scripts/show/4681
 // 21-03-2006 Copyright (c) 2006, JAPIO http://userscripts.org/scripts/show/3609
@@ -45,7 +45,12 @@
     function openInTabs(anchors) {
         var i;
         for (i = 0; i < anchors.snapshotLength; i = i + 1) {
-            GM_openInTab(anchors.snapshotItem(i).href);
+            try {
+                GM_openInTab(anchors.snapshotItem(i).href);
+            } catch (e) {
+                GM_log("Known issue on Firefox 4: " + e);
+                // https://github.com/greasemonkey/greasemonkey/issues/#issue/1275
+            }
         }
     }
     
