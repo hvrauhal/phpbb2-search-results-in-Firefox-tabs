@@ -44,13 +44,8 @@
 
     function openInTabs(anchors) {
         var i;
-        for (i = 0; i < anchors.snapshotLength; i = i + 1) {
-            try {
-                GM_openInTab(anchors.snapshotItem(i).href);
-            } catch (e) {
-                GM_log("Known issue on Firefox 4: " + e);
-                // https://github.com/greasemonkey/greasemonkey/issues/#issue/1275
-            }
+        for (i = 0; i < anchors.snapshotLength; i++) {
+            window.open(anchors.snapshotItem(i).href);
         }
     }
     
