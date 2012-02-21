@@ -1,27 +1,18 @@
-// ==UserScript==
-// @name         jQuery For Chrome (A Cross Browser Example)
-// @namespace    jQueryForChromeExample
-// @include      *
-// @author       Erik Vergobbi Vold & Tyler G. Hicks-Wright
-// @description  This userscript is meant to be an example on how to use jQuery in a userscript on Google Chrome.
-// ==/UserScript==
+(function main() {
+    function find_links() {
+        return _.map($("img[src*='latest']").parent("a[href*='viewtopic']"), function (anchor) {
+            return {url: anchor.href, active: false}
+        })
+    }
+    
+    function open_all_in_tabs(e) {
+        var create_props = find_links()
+        e.preventDefault()
+        debugger
+        chrome.extension.sendRequest(create_props)
+    }
 
-// a function that loads jQuery and calls a callback function when jQuery has finished loading
-function addJQuery(callback) {
-  var script = document.createElement("script");
-  script.setAttribute("src", "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js");
-  script.addEventListener('load', function() {
-    var script = document.createElement("script");
-    script.textContent = "(" + callback.toString() + ")();";
-    document.body.appendChild(script);
-  }, false);
-  document.body.appendChild(script);
-}
+    $("a[href*='egosearch']").after('| <a id="open_all_in_tabs" href="#">Avaa kaikki välilehtiin</a>')
+    $("#open_all_in_tabs").click(open_all_in_tabs)
+})()
 
-// the guts of this userscript
-function main() {
-  alert("There are " + $('a').length + " links on this page.");
-}
-
-// load jQuery and execute the main function
-addJQuery(main);
