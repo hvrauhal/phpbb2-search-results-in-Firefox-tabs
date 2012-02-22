@@ -1,14 +1,12 @@
 {
-  "name": "Phpbb3 open all topics in tabs content script",
-  "version": "0.0.1",
-  "description": "Opens search topics in tabs",
-  "permissions": [
-                 "tabs"
-   ],
- "background_page": "background.html",
+  "name": "phpBB3 Open All Search Results in Tabs",
+  "version": "1",
+  "description": "Opens found topics in background tabs at their last message",
+  "permissions": ["tabs"],
+  "background_page": "background.html",
   "content_scripts": [
     {
-      "matches": ["http://laskikymppi.kapsi.fi/foorumi/*"],
+      "matches": ["*/search.php*"],
       "js" : ["jquery-1.7.1.min.js","underscore-1.3.1-min.js","phpbb3_open_topics_in_tabs.user.js"]
     }
   ]

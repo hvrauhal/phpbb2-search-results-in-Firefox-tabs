@@ -6,13 +6,11 @@
     }
     
     function open_all_in_tabs(e) {
-        var create_props = find_links()
         e.preventDefault()
-        debugger
-        chrome.extension.sendRequest(create_props)
+        chrome.extension.sendRequest(find_links())
     }
 
-    $("a[href*='egosearch']").after('| <a id="open_all_in_tabs" href="#">Avaa kaikki välilehtiin</a>')
+    $('| <a id="open_all_in_tabs" href="#">Avaa kaikki välilehtiin</a>').insertAfter("a[href*='egosearch']")
     $("#open_all_in_tabs").click(open_all_in_tabs)
 })()
 
