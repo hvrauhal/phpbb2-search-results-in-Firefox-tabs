@@ -10,7 +10,7 @@
         chrome.extension.sendRequest(find_links())
     }
 
-    $('| <a id="open_all_in_tabs" href="#">Avaa kaikki välilehtiin</a>').insertAfter("a[href*='egosearch']")
+    $("a[href*='egosearch']").after(' | <a id="open_all_in_tabs" href="#">Avaa kaikki välilehtiin</a>')
     $("#open_all_in_tabs").click(open_all_in_tabs)
 })()
 
