@@ -1,11 +1,11 @@
 // ==UserScript==
-// @name phpBB2 Open all matched topics in tabs
+// @name phpBB3 Open all matched topics in tabs
 // @namespace http://www.laskikymppi.com/
 // @description Inserts an Open all topics in tabs link to phpBB2 search pages.
 // @include */search.php?*
 // ==/UserScript==
 // */
-// 21-01-2009 hvrauhal 
+// 12-05-2012 hvrauhal
 // 19-08-2008 v1.2.0 fheub http://userscripts.org/scripts/show/4681
 // 21-03-2006 Copyright (c) 2006, JAPIO http://userscripts.org/scripts/show/3609
 //
@@ -35,7 +35,7 @@
     }
 
     function collectAllTopicAnchors() {
-        return evaluateXPath("//a[contains(@href, 'viewtopic.php?p=')]");
+        return evaluateXPath("//a[contains(@href, 'viewtopic.php') and contains (@href, 'p=')]");
     }
 
     function insertAfter(newElement, original) {
@@ -59,7 +59,7 @@
     }
 
     function lookupForumIndexCell() {
-        return evaluateXPath("//td/span/a[contains(@href, 'index.php')]/parent::*/parent::*").snapshotItem(0);
+        return evaluateXPath("//a[contains(@href, 'egosearch')]").snapshotItem(0);
     }
 
     function insertActionToPage(anchors) {
